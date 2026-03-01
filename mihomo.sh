@@ -17,7 +17,7 @@ mkdir -p ${FILE_DIR}
 if [ -f "$DEST_FILE" ]; then
     # 生成当前时间戳，格式为 YYYYMMDDTHHMMSS
     TIMESTAMP=$(date +"%Y%m%dT%H%M%S")
-    BACKUP_NAME="mihomo-${TIMESTAMP}.yaml"
+    BACKUP_NAME="${FILE_DIR}/mihomo-${TIMESTAMP}.yaml"
     
     # 重命名旧文件
     mv "$DEST_FILE" "$BACKUP_NAME"
