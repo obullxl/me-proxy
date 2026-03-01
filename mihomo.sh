@@ -34,7 +34,7 @@ TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
 
 cd "${REPO_DIR}"
 git add --all
-git commit -m "${TIMESTAMP}: Update mihomo.yaml"
+git commit -m "${TIMESTAMP} : Update mihomo.yaml"
 git push
 
 echo "🎉 同步完成"
