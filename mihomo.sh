@@ -5,12 +5,13 @@
 # C:\Users\obull\config  /app/config
 
 # 1. 定义变量，使用容器内的Linux路径
-UPDATE_FILE="/app/output/mihomo.yaml"  # Docker内访问Windows C盘的文件
-REPO_DIR="/app/config/me-proxy/mihomo" # Docker内访问Windows D盘的仓库目录
-DEST_FILE="${REPO_DIR}/mihomo.yaml"
+UPDATE_FILE="/app/output/mihomo.yaml" # 原始文件
+REPO_DIR="/app/config/me-proxy"       # 本地仓库目录
+FILE_DIR="${REPO_DIR}/mihomo"         # 目标文件仓库目录
+DEST_FILE="${FILE_DIR}/mihomo.yaml"   # 目标文件
 
-# 2. 进入仓库目录
-cd "$REPO_DIR" || { echo " 仓库目录 $REPO_DIR 不存在或无法访问"; exit 1; }
+# 2. 尝试创建仓库目录
+mkdir -p ${FILE_DIR}
 
 # 3. 如果目标文件已存在，则进行备份重命名
 if [ -f "$DEST_FILE" ]; then
@@ -23,15 +24,17 @@ if [ -f "$DEST_FILE" ]; then
     echo "ℹ️ 已备份旧文件为: $BACKUP_NAME"
 fi
 
-# 4. 将新文件从C盘复制到仓库目录（覆盖）
-# 注意：这里使用 cp 而不是 mv，以保留 C 盘的原始文件
+# 4. 将新文件复制到仓库目录（覆盖）
+# 注意：这里使用 cp 而不是 mv，以保留原始文件
 cp "$UPDATE_FILE" "$DEST_FILE"
 echo "✅ 已更新最新文件"
 
 # 5. 执行 Git 提交和推送
-cd /app/config/me-proxy
+TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+
+cd "${REPO_DIR}"
 git add --all
-git commit -m "Update mihomo.yaml"
+git commit -m "${TIMESTAMP}: Update mihomo.yaml"
 git push
 
 echo "🎉 同步完成"
